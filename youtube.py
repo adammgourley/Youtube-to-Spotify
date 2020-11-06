@@ -12,11 +12,14 @@ class Youtube:
         self.credentials = None
         self.set_credentials()
         self.youtube = build("youtube", "v3", developerKey=self.API_KEY)
+
         self.url = url.split("?list=")
-        self.titles = []
         self.playlist_title = ""
+        self.titles = []
+
         self.get_titles(self.url)
         self.get_playlist_title(self.url)
+
 
     def set_credentials(self):
         if os.path.exists('token.pickle'):
@@ -42,6 +45,7 @@ class Youtube:
                     print('Saving Credentials for Future Use...')
                     pickle.dump(self.credentials, f)
     
+
     def get_titles(self, url, next_page=None):
         request = self.youtube.playlistItems().list(part=['snippet'], playlistId=url[-1], pageToken=next_page)
         response = request.execute()
@@ -51,6 +55,7 @@ class Youtube:
         
         if "nextPageToken" in response:
             self.get_titles(url, response['nextPageToken'])
+
 
     def get_playlist_title(self, url):
         playlist_title_request = self.youtube.playlists().list(part='snippet', id=url[-1])

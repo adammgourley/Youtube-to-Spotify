@@ -1,4 +1,3 @@
-# https://spotipy.readthedocs.io/en/2.16.1/#api-reference
 import spotipy, pprint
 from spotipy.oauth2 import SpotifyOAuth
 import os, json
@@ -8,7 +7,7 @@ scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 def strip_common_words(title):
-    common_words = ["(official music video)", "(official lyric video)", "(lyrics)", "(bass boosted)"]
+    common_words = ["(official music video)", "(official lyric video)", "(lyrics)", "(bass boosted)", "lyrics"]
     for i in common_words:
         if i in title:
             title = title.replace(i, "")
