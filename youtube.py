@@ -3,15 +3,20 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
+### TODO:
+###   - Do all formatting of titles in 'youtube.py' instead of 'main.py'
+
 class Youtube:
-    def __init__(self):
+    def __init__(self, url):
         self.API_KEY = os.getenv('API_KEY') if os.getenv('API_KEY') is not None else input('Enter Youtube API Key: ')
         self.credentials = None
         self.set_credentials()
         self.youtube = build("youtube", "v3", developerKey=self.API_KEY)
-        self.url = input("Enter Youtube Playlist URL: ").split("?list=")
-        self.all_videos = []
-        self.get_playlist(self.url)
+        self.url = url.split("?list=")
+        self.titles = []
+        self.playlist_title = ""
+        self.get_titles(self.url)
+        self.get_playlist_title(self.url)
 
     def set_credentials(self):
         if os.path.exists('token.pickle'):
@@ -37,17 +42,17 @@ class Youtube:
                     print('Saving Credentials for Future Use...')
                     pickle.dump(self.credentials, f)
     
-    def get_playlist(self, url, next_page=None):
+    def get_titles(self, url, next_page=None):
         request = self.youtube.playlistItems().list(part=['snippet'], playlistId=url[-1], pageToken=next_page)
         response = request.execute()
 
         for video in response['items']:
-            self.all_videos.append(video['snippet']['title'])
+            self.titles.append(video['snippet']['title'])
         
         if "nextPageToken" in response:
-            self.get_playlist(url, response['nextPageToken'])
-    
-    
+            self.get_titles(url, response['nextPageToken'])
 
-yt = Youtube()
-print(yt.all_videos)
+    def get_playlist_title(self, url):
+        playlist_title_request = self.youtube.playlists().list(part='snippet', id=url[-1])
+        title_response = playlist_title_request.execute()
+        self.playlist_title = title_response['items'][0]['snippet']['title']

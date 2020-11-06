@@ -2,6 +2,7 @@
 import spotipy, pprint
 from spotipy.oauth2 import SpotifyOAuth
 import os, json
+import youtube
 
 scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
@@ -24,18 +25,21 @@ def format_title(title):
         return "", title
 
 
-def build_playlist(sp, URIs):
-    username = input("Enter Spotify username: ")
-    #### Need to get playlist name from youtube
-    playlist_name = "Test"
-    sp.user_playlist_create(username, playlist_name, public=False)
-    playlists = sp.current_user_playlists()
+def get_playlist_id(username, title, offset_count=0):
+    details = sp.user_playlists(username, limit=50, offset=offset_count)
+    for i in details['items']:
+        if i['name'] == title and int(i['tracks']['total']) == 0:
+            return i['id']
+    offset_count += 50
+    get_details(username, offset_count)
 
-    for i in playlists['items']:
-        if i['name'] == playlist_name:
-            playlist_id = i['id']
-    
+
+
+def build_playlist(URIs, username, title):
+    sp.user_playlist_create(username, title, public=False, description=f"{title} - Created with Youtube to Spotify")
+    playlist_id = get_playlist_id(username, title)
     sp.playlist_add_items(playlist_id, URIs)
+    print(f"Completed Playlist Transfer!")
 
 
 def get_URIs(songs):
@@ -59,7 +63,10 @@ def get_URIs(songs):
     return URIs
 
 def main():
-    build_playlist(get_URIs())
+    url = input("Enter Youtube Playlist URL: ")
+    username = input("Enter Spotify username: ")
+    yt = youtube.Youtube(url)
+    build_playlist(get_URIs(yt.titles), username, yt.playlist_title)
 
 
 if __name__ == '__main__':
