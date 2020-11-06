@@ -8,6 +8,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 
+scope = "user-library-read"
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 def strip_common_words(title):
     # (Official, Official, (Lyrics, Lyrics, Video, Video), (Music
@@ -28,8 +30,9 @@ def format_title(title):
         return "", title
 
 
-def create_playlist(sp, URIs):
+def build_playlist(sp, URIs):
     username = input("Enter Spotify username: ")
+    #### Need to get playlist name from youtube
     playlist_name = "Test"
     sp.user_playlist_create(username, playlist_name, public=False)
     playlists = sp.current_user_playlists()
@@ -38,37 +41,32 @@ def create_playlist(sp, URIs):
         if i['name'] == playlist_name:
             playlist_id = i['id']
     
-    add_songs_to_playlist(sp, URIs, playlist_id)
-
-
-def add_songs_to_playlist(sp, URIs, playlist_id):
     sp.playlist_add_items(playlist_id, URIs)
 
 
-def get_URIs(sp):
+def get_URIs():
     URIs = []
-    songs = ['Jason Aldean - Rearview Town (Official Music Video)', "Jason Aldean - Burnin' It Down", 'J. Cole - MIDDLE CHILD']
     for song in songs:
         song = strip_common_words(song.lower())
         search_results = sp.search(song, type="track", limit=1)
 
-        # Try to change the format of the search in order to get results
+        # Try to change the format of the search query in order to get results
         if len(search_results['tracks']['items']) == 0:
             song_artist, song_title = format_title(song)
             search_results = sp.search(q=f'name:{song_title} artist:{song_artist}', type="track", limit=1)
 
             if len(search_results['tracks']['items']) == 0:
-                print(f"----  WARNING: '{song.title()}' not found on Spotify.  ----")
+                print(f"*****  WARNING: '{song.title()}' not found on Spotify.  *****")
                 continue
+        print(f"--- '{song.title()}' successfully added to playlist. ---")
 
         # Get name of song, also where we should get the track ID
-        top_three = [i['name'] for i in search_results['tracks']['items']]
         URIs.append(search_results['tracks']['items'][0]['uri'])
     
-    create_playlist(sp, URIs)
+    return URIs
 
 def main():
-    get_URIs(sp)
+    build_playlist(get_URIs())
 
 
 if __name__ == '__main__':

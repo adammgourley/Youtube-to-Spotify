@@ -38,7 +38,6 @@ if not credentials or not credentials.valid:
 API_KEY = os.getenv("API_KEY")
 youtube = build("youtube", "v3", developerKey=API_KEY)
 playlist_url = input("Playlist URL: ").split("?list=")
-# playlist_url = ["local", "PLZlS83zsu3vwjGHfosK9Qxz34Yn28yUwv"]
 
 all_videos = []
 def get_playlist(url, next_page=None):
