@@ -2,17 +2,11 @@
 import spotipy, pprint
 from spotipy.oauth2 import SpotifyOAuth
 import os, json
-import pickle
-import pprint
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from googleapiclient.discovery import build
 
 scope = "user-library-read"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 def strip_common_words(title):
-    # (Official, Official, (Lyrics, Lyrics, Video, Video), (Music
     common_words = ["(official music video)", "(official lyric video)", "(lyrics)", "(bass boosted)"]
     for i in common_words:
         if i in title:
@@ -44,7 +38,7 @@ def build_playlist(sp, URIs):
     sp.playlist_add_items(playlist_id, URIs)
 
 
-def get_URIs():
+def get_URIs(songs):
     URIs = []
     for song in songs:
         song = strip_common_words(song.lower())
@@ -58,11 +52,10 @@ def get_URIs():
             if len(search_results['tracks']['items']) == 0:
                 print(f"*****  WARNING: '{song.title()}' not found on Spotify.  *****")
                 continue
-        print(f"--- '{song.title()}' successfully added to playlist. ---")
 
-        # Get name of song, also where we should get the track ID
+        print(f"--- '{song.title()}' successfully added to playlist. ---")
         URIs.append(search_results['tracks']['items'][0]['uri'])
-    
+
     return URIs
 
 def main():
