@@ -6,3 +6,4 @@ client_secrets.json
 notes.txt
 token.pickle
 set_environment.py
+__pycache__/
