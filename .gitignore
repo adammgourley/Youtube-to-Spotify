@@ -1,0 +1,8 @@
+venv/
+.vscode/
+.mypy_cache/
+.cache
+client_secrets.json
+notes.txt
+token.pickle
+set_environment.py
