@@ -3,7 +3,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import os, json
 import youtube
 
-scope = "user-library-read"
+scope = "playlist-read-private playlist-modify-private"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 def strip_common_words(title):
@@ -24,19 +24,15 @@ def format_title(title):
         return "", title
 
 
-def get_playlist_id(username, title, offset_count=0):
-    details = sp.user_playlists(username, limit=50, offset=offset_count)
-    for i in details['items']:
-        if i['name'] == title and int(i['tracks']['total']) == 0:
-            return i['id']
-    offset_count += 50
-    get_details(username, offset_count)
+def get_playlist_id(username):
+    details = sp.user_playlists(username, limit=1)
+    return details['items'][0]['id']
 
 
 
 def build_playlist(URIs, username, title):
     sp.user_playlist_create(username, title, public=False, description=f"{title} - Created with Youtube to Spotify")
-    playlist_id = get_playlist_id(username, title)
+    playlist_id = get_playlist_id(username)
     sp.playlist_add_items(playlist_id, URIs)
     print(f"Completed Playlist Transfer!")
 
