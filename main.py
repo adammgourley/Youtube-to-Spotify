@@ -29,7 +29,6 @@ def get_playlist_id(username):
     return details['items'][0]['id']
 
 
-
 def build_playlist(URIs, username, title):
     sp.user_playlist_create(username, title, public=False, description=f"{title} - Created with Youtube to Spotify")
     playlist_id = get_playlist_id(username)
