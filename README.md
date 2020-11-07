@@ -4,7 +4,7 @@
 ## Getting Started
 
 #### First things first...
-- Set your Youtube playlist to "Unlisted" or "Public." The script will fail otherwise.
+- Set your Youtube playlist's privacy to "Unlisted" or "Public." The script will fail otherwise.
 
 #### Install (or upgrade) required dependencies
     $ pip3 install google-api-python-client
