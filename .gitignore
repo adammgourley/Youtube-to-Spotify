@@ -5,5 +5,5 @@ venv/
 client_secrets.json
 notes.txt
 token.pickle
-set_environment.py
+variables.env
 __pycache__/
