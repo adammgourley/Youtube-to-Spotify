@@ -18,7 +18,8 @@
 - Spotify Client Secret
 - Spotify Redirect URI (Set this on Spotify API Dashboard I used "http://example.com")
 
-## Running These Scripts
+
+## Running The Script
 
 First off, you need to set your environment variables. (If running on Windows, "export" should be changed to "set")
 
