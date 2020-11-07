@@ -28,6 +28,7 @@
 
 ## Running These Scripts
 The script you need to run is "main.py"
-    python3 main.py
+
+    $ python3 main.py
 
 The program will ask for the Youtube playlist URL and your Spotify username. Keep in mind, the playlist created on your spotify account will be titled the same as the playlist on Youtube. This may cause the program to add songs to the playlist titled the same. In order to avoid this, make sure there are no playlists saved to your Spotify with the same name as the Youtube playlist being converted.
