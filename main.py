@@ -3,6 +3,13 @@ from spotipy.oauth2 import SpotifyOAuth
 import os, json
 import youtube
 
+# Set environment variables (set these in a file names "variables.sh")
+# The file should contain an export command for each variable
+# EX: 	$ export variable_name="variable_value";
+#	$ export variable_name_2="variable_value_2";
+if os.path.isfile('variables.sh'):
+    os.system("source ./variables.sh")
+
 scope = "playlist-read-private playlist-modify-private"
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 

@@ -21,12 +21,20 @@
 
 ## Running The Script
 
-First off, you need to set your environment variables. (If running on Windows, "export" should be changed to "set")
+First off, you need to set your environment variables. Do this in a file named "variables.sh". The file contain the following...
 
-    $ export API_KEY=[YOUR GOOGLE API KEY]
-    $ export SPOTIPY_CLIENT_ID=[YOUR SPOTIFY CLIENT ID]
-    $ export SPOTIPY_CLIENT_SECRET=[YOUR SPOTIFY CLIENT SECRET KEY]
-    $ export SPOTIPY_REDIRECT_URI=[REDIRECT URI SET ON SPOTIFY API DASHBOARD]
+    $ export API_KEY="<YOUR GOOGLE API KEY>";
+    $ export SPOTIPY_CLIENT_ID="<YOUR SPOTIFY CLIENT ID>";
+    $ export SPOTIPY_CLIENT_SECRET="<YOUR SPOTIFY CLIENT SECRET KEY>";
+    $ export SPOTIPY_REDIRECT_URI="<REDIRECT URI SET ON SPOTIFY API DASHBOARD>";
+
+If you are on Windows, do not create a file. Rather, enter the following commands (to set env variables) before running "main.py".
+
+    $ set API_KEY="<YOUR GOOGLE API KEY>";
+    $ set SPOTIPY_CLIENT_ID="<YOUR SPOTIFY CLIENT ID>";
+    $ set SPOTIPY_CLIENT_SECRET="<YOUR SPOTIFY CLIENT SECRET KEY>";
+    $ set SPOTIPY_REDIRECT_URI="<REDIRECT URI SET ON SPOTIFY API DASHBOARD>";
+
 
 After that, run the script. You will need to input the Youtube playlist URL and your Spotify username.
 
